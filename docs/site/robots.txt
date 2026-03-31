@@ -1,0 +1,10 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://rudra496.github.io/worldsim-ai/sitemap.xml
+
+User-agent: Googlebot
+Allow: /
+
+User-agent: Twitterbot
+Allow: /

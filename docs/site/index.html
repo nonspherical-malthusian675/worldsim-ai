@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="WorldSim AI — Free open-source AI-powered digital twin simulation platform. Model smart cities, factories, energy grids, and logistics with PyTorch, Three.js, FastAPI, and React.">
+    <meta name="keywords" content="digital twin, simulation platform, agent-based modeling, AI simulation, smart city simulation, factory optimization, energy grid, PyTorch, Three.js, FastAPI, open source, free simulation software, reinforcement learning, IoT data ingestion, distributed simulation, GIS integration">
+    <meta name="author" content="Rudra Sarker">
+    <meta name="robots" content="index, follow">
+    <meta name="googlebot" content="index, follow, max-video-preview:-1, max-image-preview:large, max-snippet:-1">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://rudra496.github.io/worldsim-ai/">
+    <meta property="og:title" content="WorldSim AI — AI-Powered Digital Twin Simulation Platform">
+    <meta property="og:description" content="Model, predict, and optimize real-world systems. Free, open-source digital twin simulation with 3D visualization, reinforcement learning, and IoT data ingestion.">
+    <meta property="og:image" content="https://rudra496.github.io/worldsim-ai/assets/og-image.png">
+    <meta property="og:site_name" content="WorldSim AI">
+    <meta property="og:locale" content="en_US">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="WorldSim AI — AI-Powered Digital Twin Simulation Platform">
+    <meta name="twitter:description" content="Free open-source digital twin simulation. Smart cities, factories, energy grids, 3D visualization, RL agents, IoT ingestion.">
+    <meta name="twitter:image" content="https://rudra496.github.io/worldsim-ai/assets/og-image.png">
+    <meta name="twitter:creator" content="@Rudra496">
+    <meta name="twitter:site" content="@Rudra496">
+
+    <!-- Canonical -->
+    <link rel="canonical" href="https://rudra496.github.io/worldsim-ai/">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌍</text></svg>">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "SoftwareSourceCode",
+        "name": "WorldSim AI",
+        "description": "AI-Powered Digital Twin Simulation Platform",
+        "url": "https://github.com/rudra496/worldsim-ai",
+        "codeRepository": "https://github.com/rudra496/worldsim-ai",
+        "programmingLanguage": ["Python", "JavaScript"],
+        "license": "https://opensource.org/licenses/MIT",
+        "author": {
+            "@type": "Person",
+            "name": "Rudra Sarker",
+            "url": "https://github.com/rudra496",
+            "sameAs": [
+                "https://twitter.com/Rudra496",
+                "https://www.linkedin.com/in/rudrasarker",
+                "https://www.facebook.com/rudrasarker130",
+                "https://rudra496.github.io/site",
+                "https://www.researchgate.net/profile/Rudra-Sarker-3"
+            ]
+        },
+        "version": "1.0.0",
+        "runtimePlatform": "Python 3.11+, Node.js 18+",
+        "applicationCategory": "SimulationFramework"
+    }
+    </script>
+
+    <title>WorldSim AI — AI-Powered Digital Twin Simulation Platform</title>
+
+    <style>
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --bg-primary: #0a0a1a;
+            --bg-secondary: #0f0f2a;
+            --bg-card: #141432;
+            --bg-card-hover: #1a1a40;
+            --bg-gradient-1: linear-gradient(135deg, #0a0a1a 0%, #1a0a3a 50%, #0a1a3a 100%);
+            --bg-gradient-2: linear-gradient(135deg, #141432 0%, #0a2040 100%);
+            --text-primary: #e8e8ff;
+            --text-secondary: #a0a0d0;
+            --text-muted: #6a6a9a;
+            --accent-blue: #4a9eff;
+            --accent-purple: #8b5cf6;
+            --accent-green: #10b981;
+            --accent-orange: #f59e0b;
+            --accent-red: #ef4444;
+            --accent-cyan: #06b6d4;
+            --border: rgba(100, 100, 200, 0.15);
+            --border-light: rgba(100, 100, 200, 0.25);
+            --glow-blue: 0 0 40px rgba(74, 158, 255, 0.15);
+            --glow-purple: 0 0 40px rgba(139, 92, 246, 0.15);
+            --radius: 16px;
+            --radius-sm: 10px;
+            --max-width: 1200px;
+            --font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            --mono: 'JetBrains Mono', 'Fira Code', monospace;
+        }
+
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: var(--font);
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+
+        /* ── NAV ────────────────────────────────── */
+        nav {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+            backdrop-filter: blur(20px);
+            background: rgba(10, 10, 26, 0.85);
+            border-bottom: 1px solid var(--border);
+            padding: 0 2rem;
+        }
+        .nav-inner {
+            max-width: var(--max-width); margin: 0 auto;
+            display: flex; align-items: center; justify-content: space-between;
+            height: 64px;
+        }
+        .nav-logo {
+            font-size: 1.3rem; font-weight: 800; color: var(--text-primary);
+            text-decoration: none; display: flex; align-items: center; gap: 8px;
+        }
+        .nav-logo span { color: var(--accent-blue); }
+        .nav-links { display: flex; gap: 2rem; list-style: none; }
+        .nav-links a {
+            color: var(--text-secondary); text-decoration: none; font-size: 0.9rem;
+            font-weight: 500; transition: color 0.2s;
+        }
+        .nav-links a:hover { color: var(--accent-blue); }
+        .nav-cta {
+            padding: 8px 20px; background: var(--accent-blue); color: #000;
+            border-radius: 8px; font-weight: 600; font-size: 0.9rem;
+            text-decoration: none; transition: all 0.2s;
+        }
+        .nav-cta:hover { background: #6ab4ff; transform: translateY(-1px); }
+
+        /* ── HERO ───────────────────────────────── */
+        .hero {
+            min-height: 100vh; display: flex; align-items: center; justify-content: center;
+            padding: 120px 2rem 80px; text-align: center;
+            background: var(--bg-gradient-1); position: relative; overflow: hidden;
+        }
+        .hero::before {
+            content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+            background: radial-gradient(ellipse at 30% 20%, rgba(74, 158, 255, 0.08) 0%, transparent 50%),
+                        radial-gradient(ellipse at 70% 80%, rgba(139, 92, 246, 0.08) 0%, transparent 50%);
+            animation: float 20s ease-in-out infinite;
+        }
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0); }
+            50% { transform: translate(-2%, -2%); }
+        }
+        .hero-content { position: relative; z-index: 1; max-width: 800px; }
+        .hero-badge {
+            display: inline-flex; align-items: center; gap: 8px;
+            padding: 6px 16px; border-radius: 50px;
+            background: rgba(74, 158, 255, 0.1); border: 1px solid rgba(74, 158, 255, 0.3);
+            color: var(--accent-blue); font-size: 0.85rem; font-weight: 500;
+            margin-bottom: 24px;
+        }
+        .hero-badge .pulse { width: 8px; height: 8px; border-radius: 50%; background: var(--accent-green); animation: pulse 2s infinite; }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+        .hero h1 {
+            font-size: clamp(2.5rem, 6vw, 4.5rem); font-weight: 900;
+            line-height: 1.1; margin-bottom: 24px;
+            background: linear-gradient(135deg, #e8e8ff 0%, #4a9eff 50%, #8b5cf6 100%);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .hero p {
+            font-size: 1.2rem; color: var(--text-secondary); max-width: 600px;
+            margin: 0 auto 40px; line-height: 1.8;
+        }
+        .hero-actions { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+        .btn-primary {
+            padding: 14px 32px; background: var(--accent-blue); color: #000;
+            border-radius: var(--radius-sm); font-weight: 700; font-size: 1rem;
+            text-decoration: none; transition: all 0.3s; display: inline-flex;
+            align-items: center; gap: 8px; border: none; cursor: pointer;
+        }
+        .btn-primary:hover { background: #6ab4ff; transform: translateY(-2px); box-shadow: 0 8px 30px rgba(74, 158, 255, 0.3); }
+        .btn-secondary {
+            padding: 14px 32px; background: transparent; color: var(--text-primary);
+            border: 1px solid var(--border-light); border-radius: var(--radius-sm);
+            font-weight: 600; font-size: 1rem; text-decoration: none;
+            transition: all 0.3s; display: inline-flex; align-items: center; gap: 8px;
+        }
+        .btn-secondary:hover { border-color: var(--accent-blue); color: var(--accent-blue); background: rgba(74, 158, 255, 0.05); }
+
+        .hero-stats {
+            display: flex; justify-content: center; gap: 48px;
+            margin-top: 60px; padding-top: 40px;
+            border-top: 1px solid var(--border);
+        }
+        .hero-stat { text-align: center; }
+        .hero-stat .num {
+            font-size: 2.5rem; font-weight: 900; font-family: var(--mono);
+            background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+        }
+        .hero-stat .label { font-size: 0.85rem; color: var(--text-muted); margin-top: 4px; }
+
+        /* ── SECTIONS ───────────────────────────── */
+        section { padding: 100px 2rem; }
+        .section-inner { max-width: var(--max-width); margin: 0 auto; }
+        .section-header { text-align: center; margin-bottom: 60px; }
+        .section-label {
+            display: inline-block; padding: 4px 14px; border-radius: 50px;
+            background: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.3);
+            color: var(--accent-purple); font-size: 0.8rem; font-weight: 600;
+            text-transform: uppercase; letter-spacing: 1px; margin-bottom: 16px;
+        }
+        .section-header h2 {
+            font-size: clamp(2rem, 4vw, 3rem); font-weight: 800;
+            margin-bottom: 16px;
+        }
+        .section-header p { color: var(--text-secondary); max-width: 600px; margin: 0 auto; font-size: 1.05rem; }
+
+        /* ── FEATURES GRID ──────────────────────── */
+        .features-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 24px;
+        }
+        .feature-card {
+            padding: 32px; border-radius: var(--radius);
+            background: var(--bg-card); border: 1px solid var(--border);
+            transition: all 0.3s; position: relative; overflow: hidden;
+        }
+        .feature-card:hover {
+            border-color: var(--border-light); background: var(--bg-card-hover);
+            transform: translateY(-4px); box-shadow: var(--glow-blue);
+        }
+        .feature-icon {
+            width: 48px; height: 48px; border-radius: 12px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.5rem; margin-bottom: 20px;
+        }
+        .feature-card h3 { font-size: 1.15rem; font-weight: 700; margin-bottom: 10px; }
+        .feature-card p { color: var(--text-secondary); font-size: 0.95rem; line-height: 1.7; }
+        .feature-card ul { color: var(--text-secondary); font-size: 0.9rem; margin-top: 12px; padding-left: 20px; }
+        .feature-card li { margin-bottom: 4px; }
+
+        .icon-blue { background: rgba(74, 158, 255, 0.12); }
+        .icon-purple { background: rgba(139, 92, 246, 0.12); }
+        .icon-green { background: rgba(16, 185, 129, 0.12); }
+        .icon-orange { background: rgba(245, 158, 11, 0.12); }
+        .icon-red { background: rgba(239, 68, 68, 0.12); }
+        .icon-cyan { background: rgba(6, 182, 212, 0.12); }
+
+        /* ── DEMO ───────────────────────────────── */
+        #demo { background: var(--bg-secondary); }
+        .demo-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 20px;
+        }
+        .demo-card {
+            padding: 28px; border-radius: var(--radius-sm);
+            background: var(--bg-card); border: 1px solid var(--border);
+            transition: all 0.3s;
+        }
+        .demo-card:hover { border-color: var(--accent-blue); transform: translateY(-2px); }
+        .demo-card .emoji { font-size: 2rem; margin-bottom: 12px; }
+        .demo-card h3 { font-size: 1.1rem; font-weight: 700; margin-bottom: 8px; }
+        .demo-card p { color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 16px; }
+        .demo-stats { display: flex; gap: 16px; }
+        .demo-stat { font-size: 0.8rem; color: var(--text-muted); }
+        .demo-stat strong { color: var(--text-primary); font-family: var(--mono); }
+
+        /* ── ROADMAP ────────────────────────────── */
+        .roadmap-timeline { position: relative; padding-left: 32px; }
+        .roadmap-timeline::before {
+            content: ''; position: absolute; left: 11px; top: 0; bottom: 0;
+            width: 2px; background: linear-gradient(to bottom, var(--accent-blue), var(--accent-purple), var(--accent-green));
+        }
+        .roadmap-item { position: relative; margin-bottom: 32px; }
+        .roadmap-item:last-child { margin-bottom: 0; }
+        .roadmap-dot {
+            position: absolute; left: -27px; top: 6px; width: 14px; height: 14px;
+            border-radius: 50%; background: var(--accent-green);
+            border: 3px solid var(--bg-primary);
+            box-shadow: 0 0 12px rgba(16, 185, 129, 0.4);
+        }
+        .roadmap-version {
+            font-size: 0.8rem; font-weight: 700; color: var(--accent-green);
+            text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px;
+        }
+        .roadmap-item h3 { font-size: 1.1rem; font-weight: 700; margin-bottom: 6px; }
+        .roadmap-item p { color: var(--text-secondary); font-size: 0.95rem; }
+
+        /* ── ARCHITECTURE ───────────────────────── */
+        #architecture { background: var(--bg-secondary); }
+        .arch-box {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px; margin-top: 40px;
+        }
+        .arch-layer {
+            padding: 24px; border-radius: var(--radius-sm);
+            background: var(--bg-card); border: 1px solid var(--border);
+            text-align: center; transition: all 0.3s;
+        }
+        .arch-layer:hover { border-color: var(--accent-purple); box-shadow: var(--glow-purple); }
+        .arch-layer .layer-icon { font-size: 1.8rem; margin-bottom: 12px; }
+        .arch-layer h3 { font-size: 0.95rem; font-weight: 700; margin-bottom: 8px; }
+        .arch-layer p { font-size: 0.8rem; color: var(--text-muted); line-height: 1.6; }
+
+        /* ── QUICK START ────────────────────────── */
+        .code-block {
+            background: #0d0d24; border: 1px solid var(--border);
+            border-radius: var(--radius-sm); padding: 24px;
+            font-family: var(--mono); font-size: 0.9rem;
+            overflow-x: auto; position: relative;
+        }
+        .code-block .comment { color: #6a6a9a; }
+        .code-block .command { color: #10b981; }
+        .code-block .url { color: #4a9eff; }
+        .code-block .copy-btn {
+            position: absolute; top: 12px; right: 12px;
+            padding: 4px 12px; background: rgba(255,255,255,0.05);
+            border: 1px solid var(--border); border-radius: 6px;
+            color: var(--text-muted); font-size: 0.75rem; cursor: pointer;
+            font-family: var(--font); transition: all 0.2s;
+        }
+        .code-block .copy-btn:hover { color: var(--text-primary); border-color: var(--accent-blue); }
+
+        /* ── CTA ────────────────────────────────── */
+        .cta {
+            text-align: center; padding: 100px 2rem;
+            background: var(--bg-gradient-1); position: relative;
+        }
+        .cta h2 { font-size: clamp(2rem, 4vw, 3rem); font-weight: 900; margin-bottom: 16px; }
+        .cta p { color: var(--text-secondary); font-size: 1.1rem; margin-bottom: 32px; }
+        .cta-actions { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+
+        /* ── FOOTER ─────────────────────────────── */
+        footer {
+            padding: 60px 2rem 40px; border-top: 1px solid var(--border);
+            background: var(--bg-primary);
+        }
+        .footer-inner { max-width: var(--max-width); margin: 0 auto; }
+        .footer-grid {
+            display: grid; grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 48px; margin-bottom: 48px;
+        }
+        .footer-brand p { color: var(--text-secondary); font-size: 0.9rem; margin-top: 12px; line-height: 1.7; }
+        .footer-col h4 { font-size: 0.85rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 16px; color: var(--text-muted); }
+        .footer-col ul { list-style: none; }
+        .footer-col li { margin-bottom: 8px; }
+        .footer-col a { color: var(--text-secondary); text-decoration: none; font-size: 0.9rem; transition: color 0.2s; }
+        .footer-col a:hover { color: var(--accent-blue); }
+        .footer-social { display: flex; gap: 12px; margin-top: 16px; }
+        .footer-social a {
+            width: 40px; height: 40px; border-radius: 10px;
+            background: var(--bg-card); border: 1px solid var(--border);
+            display: flex; align-items: center; justify-content: center;
+            color: var(--text-secondary); text-decoration: none; font-size: 1.1rem;
+            transition: all 0.2s;
+        }
+        .footer-social a:hover { border-color: var(--accent-blue); color: var(--accent-blue); background: rgba(74, 158, 255, 0.08); }
+        .footer-bottom {
+            padding-top: 24px; border-top: 1px solid var(--border);
+            display: flex; justify-content: space-between; align-items: center;
+            color: var(--text-muted); font-size: 0.85rem;
+        }
+        .footer-bottom a { color: var(--text-secondary); text-decoration: none; }
+        .footer-bottom a:hover { color: var(--accent-blue); }
+
+        /* ── MOBILE ─────────────────────────────── */
+        .mobile-toggle { display: none; background: none; border: none; color: var(--text-primary); font-size: 1.5rem; cursor: pointer; }
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .mobile-toggle { display: block; }
+            .nav-links.open {
+                display: flex; flex-direction: column;
+                position: absolute; top: 64px; left: 0; right: 0;
+                background: rgba(10, 10, 26, 0.95); padding: 20px;
+                border-bottom: 1px solid var(--border); gap: 16px;
+            }
+            .hero-stats { flex-direction: column; gap: 24px; }
+            .footer-grid { grid-template-columns: 1fr 1fr; gap: 32px; }
+            .footer-bottom { flex-direction: column; gap: 12px; text-align: center; }
+        }
+        @media (max-width: 480px) {
+            .footer-grid { grid-template-columns: 1fr; }
+            section { padding: 60px 1rem; }
+        }
+
+        /* ── SCROLL ANIMATIONS ──────────────────── */
+        .fade-in { opacity: 0; transform: translateY(30px); transition: all 0.6s ease-out; }
+        .fade-in.visible { opacity: 1; transform: translateY(0); }
+    </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+    <div class="nav-inner">
+        <a href="#" class="nav-logo">🌍 World<span>Sim AI</span></a>
+        <button class="mobile-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')">☰</button>
+        <ul class="nav-links">
+            <li><a href="#features">Features</a></li>
+            <li><a href="#demo">Scenarios</a></li>
+            <li><a href="#architecture">Architecture</a></li>
+            <li><a href="#roadmap">Roadmap</a></li>
+            <li><a href="#start">Get Started</a></li>
+        </ul>
+        <a href="https://github.com/rudra496/worldsim-ai" class="nav-cta" target="_blank" rel="noopener">⭐ Star on GitHub</a>
+    </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+    <div class="hero-content">
+        <div class="hero-badge"><span class="pulse"></span> v1.0.0 — Full Digital Twin Platform</div>
+        <h1>Model the World.<br>Optimize the Future.</h1>
+        <p>AI-powered digital twin simulation for smart cities, factories, energy grids, and logistics. Free, open-source, research-grade — runs entirely on your machine.</p>
+        <div class="hero-actions">
+            <a href="https://github.com/rudra496/worldsim-ai" class="btn-primary" target="_blank" rel="noopener">⚡ Get Started</a>
+            <a href="#demo" class="btn-secondary">🎮 View Demos</a>
+        </div>
+        <div class="hero-stats">
+            <div class="hero-stat"><div class="num">82</div><div class="label">Source Files</div></div>
+            <div class="hero-stat"><div class="num">9K+</div><div class="label">Lines of Code</div></div>
+            <div class="hero-stat"><div class="num">12</div><div class="label">Python Modules</div></div>
+            <div class="hero-stat"><div class="num">6</div><div class="label">Versions Shipped</div></div>
+        </div>
+    </div>
+</section>
+
+<!-- FEATURES -->
+<section id="features">
+    <div class="section-inner">
+        <div class="section-header fade-in">
+            <div class="section-label">Features</div>
+            <h2>Everything You Need to Simulate<br>the Real World</h2>
+            <p>From agent modeling to 3D visualization, from IoT data ingestion to distributed scaling — all in one platform.</p>
+        </div>
+        <div class="features-grid">
+            <div class="feature-card fade-in">
+                <div class="feature-icon icon-blue">🧬</div>
+                <h3>Agent-Based Modeling</h3>
+                <p>Four agent types with customizable behaviors.</p>
+                <ul>
+                    <li>Vehicles, Humans, Machines, EnergyUnits</li>
+                    <li>Rule-based & probabilistic behaviors</li>
+                    <li>Multi-agent AI coordination system</li>
+                </ul>
+            </div>
+            <div class="feature-card fade-in">
+                <div class="feature-icon icon-purple">🌐</div>
+                <h3>Environment Modeling</h3>
+                <p>Grid and graph worlds with 8 zone types.</p>
+                <ul>
+                    <li>Residential, industrial, commercial zones</li>
+                    <li>Resource management (energy, water, materials)</li>
+                    <li>Configurable world dimensions</li>
+                </ul>
+            </div>
+            <div class="feature-card fade-in">
+                <div class="feature-icon icon-green">🧠</div>
+                <h3>AI & Machine Learning</h3>
+                <p>Deep learning with graceful fallbacks.</p>
+                <ul>
+                    <li>PyTorch LSTM predictor (NumPy fallback)</li>
+                    <li>Autoencoder anomaly detection</li>
+                    <li>LP-based optimization (scipy)</li>
+                    <li>Reward-driven RL agents (PPO/Q-learning)</li>
+                </ul>
+            </div>
+            <div class="feature-card fade-in">
+                <div class="feature-icon icon-orange">🎮</div>
+                <h3>3D Visualization</h3>
+                <p>Interactive Three.js world with full controls.</p>
+                <ul>
+                    <li>React Three Fiber 3D rendering</li>
+                    <li>Orbit, pan, zoom camera controls</li>
+                    <li>Day/night cycle toggle</li>
+                    <li>Seamless 2D ↔ 3D switching</li>
+                </ul>
+            </div>
+            <div class="feature-card fade-in">
+                <div class="feature-icon icon-red">📡</div>
+                <h3>IoT Data Ingestion</h3>
+                <p>Connect real-world sensors to your simulation.</p>
+                <ul>
+                    <li>MQTT, File, REST API, Simulator sources</li>
+                    <li>Ring buffer with time-based queries</li>
+                    <li>CRITICAL/WARNING/INFO alert system</li>
+                </ul>
+            </div>
+            <div class="feature-card fade-in">
+                <div class="feature-icon icon-cyan">🏙</div>
+                <h3>Digital Twin Platform</h3>
+                <p>Full twin framework with GIS and plugins.</p>
+                <ul>
+                    <li>Live/replay/hybrid sync modes</li>
+                    <li>GeoJSON support with geofencing</li>
+                    <li>Plugin marketplace & hot-reload</li>
+                    <li>API auth + rate limiting</li>
+                </ul>
+            </div>
+            <div class="feature-card fade-in">
+                <div class="feature-icon icon-blue">📊</div>
+                <h3>Distributed Simulation</h3>
+                <p>Scale across multiple nodes.</p>
+                <ul>
+                    <li>Spatial agent partitioning</li>
+                    <li>Load balancing with migration plans</li>
+                    <li>gRPC protocol (no protoc required)</li>
+                </ul>
+            </div>
+            <div class="feature-card fade-in">
+                <div class="feature-icon icon-purple">🔬</div>
+                <h3>Research Framework</h3>
+                <p>Reproducible, exportable, configurable.</p>
+                <ul>
+                    <li>Deterministic mode (seed-based)</li>
+                    <li>State snapshots & event logging</li>
+                    <li>JSON/CSV/text export formats</li>
+                    <li>YAML-driven configuration</li>
+                </ul>
+            </div>
+            <div class="feature-card fade-in">
+                <div class="feature-icon icon-green">🐳</div>
+                <h3>One-Command Deploy</h3>
+                <p>Docker Compose gets you running instantly.</p>
+                <ul>
+                    <li>Backend + Frontend + PostgreSQL + Redis</li>
+                    <li>Multi-stage frontend build (nginx)</li>
+                    <li>FastAPI auto-documentation</li>
+                    <li>WebSocket real-time streaming</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- DEMOS -->
+<section id="demo" style="background: var(--bg-secondary);">
+    <div class="section-inner">
+        <div class="section-header fade-in">
+            <div class="section-label">Scenarios</div>
+            <h2>Built-In Demo Scenarios</h2>
+            <p>Four ready-to-run simulations covering smart cities, factories, energy grids, and emergency response.</p>
+        </div>
+        <div class="demo-grid">
+            <div class="demo-card fade-in">
+                <div class="emoji">🏙️</div>
+                <h3>Smart City Traffic</h3>
+                <p>Urban traffic simulation with vehicles and pedestrians across residential, commercial, and industrial zones.</p>
+                <div class="demo-stats">
+                    <div class="demo-stat"><strong>105</strong> agents</div>
+                    <div class="demo-stat"><strong>8</strong> zones</div>
+                    <div class="demo-stat"><strong>300</strong> ticks</div>
+                </div>
+            </div>
+            <div class="demo-card fade-in">
+                <div class="emoji">🏭</div>
+                <h3>Factory Optimization</h3>
+                <p>Production line optimization with machines, workers, and energy constraints.</p>
+                <div class="demo-stats">
+                    <div class="demo-stat"><strong>68</strong> agents</div>
+                    <div class="demo-stat"><strong>3</strong> zones</div>
+                    <div class="demo-stat"><strong>500</strong> ticks</div>
+                </div>
+            </div>
+            <div class="demo-card fade-in">
+                <div class="emoji">⚡</div>
+                <h3>Energy Balancing</h3>
+                <p>Multi-source energy grid with solar plants and varying demand patterns.</p>
+                <div class="demo-stats">
+                    <div class="demo-stat"><strong>85</strong> agents</div>
+                    <div class="demo-stat"><strong>8</strong> zones</div>
+                    <div class="demo-stat"><strong>400</strong> ticks</div>
+                </div>
+            </div>
+            <div class="demo-card fade-in">
+                <div class="emoji">🚨</div>
+                <h3>Emergency Failure</h3>
+                <p>System resilience testing under power outages and machine breakdowns.</p>
+                <div class="demo-stats">
+                    <div class="demo-stat"><strong>76</strong> agents</div>
+                    <div class="demo-stat"><strong>6</strong> zones</div>
+                    <div class="demo-stat"><strong>400</strong> ticks</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ARCHITECTURE -->
+<section id="architecture">
+    <div class="section-inner">
+        <div class="section-header fade-in">
+            <div class="section-label">Architecture</div>
+            <h2>Clean, Modular Design</h2>
+            <p>S(t+1) = F(S(t), A(t), E(t)) — every step is deterministic, extensible, and research-grade.</p>
+        </div>
+        <div class="arch-box fade-in">
+            <div class="arch-layer"><div class="layer-icon">🖥️</div><h3>Presentation</h3><p>React Dashboard<br>Three.js 3D View<br>Canvas 2D<br>Metrics Charts</p></div>
+            <div class="arch-layer"><div class="layer-icon">📡</div><h3>API</h3><p>FastAPI REST<br>WebSocket<br>CLI Tool<br>Auto-docs</p></div>
+            <div class="arch-layer"><div class="layer-icon">⚙️</div><h3>Simulation Core</h3><p>Engine S(t+1)=F()<br>Event Bus<br>State Manager<br>Snapshot System</p></div>
+            <div class="arch-layer"><div class="layer-icon">🧬</div><h3>Modeling</h3><p>4 Agent Types<br>Grid + Graph<br>8 Zone Types<br>Resources</p></div>
+            <div class="arch-layer"><div class="layer-icon">🧠</div><h3>Intelligence</h3><p>LSTM Predictor<br>Anomaly Detector<br>LP Optimizer<br>RL Agents</p></div>
+            <div class="arch-layer"><div class="layer-icon">📡</div><h3>Data I/O</h3><p>MQTT Source<br>File Source<br>API Source<br>Alert Manager</p></div>
+            <div class="arch-layer"><div class="layer-icon">🏙</div><h3>Digital Twin</h3><p>GIS / GeoJSON<br>Plugins<br>Marketplace<br>Connector</p></div>
+            <div class="arch-layer"><div class="layer-icon">📊</div><h3>Distributed</h3><p>Multi-Node<br>Partitioning<br>Load Balancer<br>gRPC</p></div>
+        </div>
+    </div>
+</section>
+
+<!-- ROADMAP -->
+<section id="roadmap" style="background: var(--bg-secondary);">
+    <div class="section-inner">
+        <div class="section-header fade-in">
+            <div class="section-label">Roadmap</div>
+            <h2>All Versions Shipped</h2>
+            <p>From core engine to full digital twin — every planned feature is implemented and production-ready.</p>
+        </div>
+        <div class="roadmap-timeline fade-in">
+            <div class="roadmap-item">
+                <div class="roadmap-dot"></div>
+                <div class="roadmap-version">v0.1 — Core Platform ✅</div>
+                <h3>Simulation Engine, Agents, Dashboard</h3>
+                <p>Core engine with S(t+1)=F(S(t),A(t),E(t)), 4 agent types, grid/graph worlds, AI prediction + LP optimization, 4 scenarios, REST + WebSocket API, React 2D dashboard, Docker Compose.</p>
+            </div>
+            <div class="roadmap-item">
+                <div class="roadmap-dot"></div>
+                <div class="roadmap-version">v0.2 — AI Enhanced ✅</div>
+                <h3>PyTorch ML, RL Agents, Multi-Agent System</h3>
+                <p>PyTorch LSTM predictor with NumPy fallback, autoencoder anomaly detection, Gymnasium RL environment, PPO/Q-learning agents, multi-agent AI (Planner, Predictor, Optimizer), adaptive feedback loops.</p>
+            </div>
+            <div class="roadmap-item">
+                <div class="roadmap-dot"></div>
+                <div class="roadmap-version">v0.3 — 3D Visualization ✅</div>
+                <h3>Three.js World, Camera Controls, View Switcher</h3>
+                <p>React Three Fiber 3D world, orbit/pan/zoom, 3D zones + agent objects with glow, day/night cycle, seamless 2D↔3D switching.</p>
+            </div>
+            <div class="roadmap-item">
+                <div class="roadmap-dot"></div>
+                <div class="roadmap-version">v0.4 — IoT Ingestion ✅</div>
+                <h3>MQTT, File, API, Simulator Data Sources</h3>
+                <p>MQTT topic subscription, CSV/JSON file ingestion, REST API polling, synthetic simulator with noise/drift injection, ring buffer, alert manager.</p>
+            </div>
+            <div class="roadmap-item">
+                <div class="roadmap-dot"></div>
+                <div class="roadmap-version">v0.5 — Distributed ✅</div>
+                <h3>Multi-Node, Partitioning, gRPC</h3>
+                <p>Distributed engine, simulation nodes with heartbeat, spatial partitioning, load balancing with migration, gRPC protocol, message serialization.</p>
+            </div>
+            <div class="roadmap-item">
+                <div class="roadmap-dot"></div>
+                <div class="roadmap-version">v1.0 — Full Digital Twin ✅</div>
+                <h3>GIS, Plugins, Marketplace, Connector</h3>
+                <p>Digital twin core (live/replay/hybrid), GIS with GeoJSON and geofencing, plugin system with hot-reload, marketplace client, REST/WebSocket connector, API key auth, rate limiting.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- GET STARTED -->
+<section id="start">
+    <div class="section-inner">
+        <div class="section-header fade-in">
+            <div class="section-label">Get Started</div>
+            <h2>Running in 60 Seconds</h2>
+        </div>
+        <div class="fade-in" style="max-width: 700px; margin: 0 auto;">
+            <div class="code-block">
+                <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.innerText.replace('Copy','').trim());this.textContent='Copied!';setTimeout(()=>this.textContent='Copy',1500)">Copy</button>
+<span class="comment"># Clone the repository</span>
+<span class="command">git clone</span> <span class="url">https://github.com/rudra496/worldsim-ai.git</span>
+<span class="command">cd</span> worldsim-ai
+
+<span class="comment"># Start everything with Docker</span>
+<span class="command">docker-compose up --build</span>
+
+<span class="comment"># 👉 Open http://localhost:3000</span>
+            </div>
+            <div style="margin-top: 32px; text-align: center;">
+                <p style="color: var(--text-secondary); margin-bottom: 16px;">No Docker? Use Python only:</p>
+                <div class="code-block">
+                    <button class="copy-btn" onclick="navigator.clipboard.writeText(this.parentElement.innerText.replace('Copy','').trim());this.textContent='Copied!';setTimeout(()=>this.textContent='Copy',1500)">Copy</button>
+<span class="command">pip install</span> -r requirements.txt
+<span class="command">python</span> run_demo.py
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA -->
+<section class="cta">
+    <div class="fade-in">
+        <h2>Ready to Simulate?</h2>
+        <p>Join the open-source digital twin community. Build, contribute, and push the boundaries of simulation.</p>
+        <div class="cta-actions">
+            <a href="https://github.com/rudra496/worldsim-ai" class="btn-primary" target="_blank" rel="noopener">⭐ Star on GitHub</a>
+            <a href="https://github.com/rudra496/worldsim-ai/releases/tag/v1.0.0" class="btn-secondary" target="_blank" rel="noopener">📦 Download v1.0.0</a>
+        </div>
+    </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+    <div class="footer-inner">
+        <div class="footer-grid">
+            <div class="footer-brand">
+                <div class="nav-logo" style="font-size: 1.5rem;">🌍 World<span>Sim AI</span></div>
+                <p>AI-Powered Digital Twin Simulation Platform. Model, predict, and optimize real-world systems. Free and open-source under the MIT License.</p>
+                <div class="footer-social">
+                    <a href="https://github.com/rudra496" target="_blank" rel="noopener" aria-label="GitHub">GH</a>
+                    <a href="https://twitter.com/Rudra496" target="_blank" rel="noopener" aria-label="Twitter">X</a>
+                    <a href="https://www.linkedin.com/in/rudrasarker" target="_blank" rel="noopener" aria-label="LinkedIn">IN</a>
+                    <a href="https://www.facebook.com/rudrasarker130" target="_blank" rel="noopener" aria-label="Facebook">FB</a>
+                    <a href="https://www.researchgate.net/profile/Rudra-Sarker-3" target="_blank" rel="noopener" aria-label="ResearchGate">RG</a>
+                </div>
+            </div>
+            <div class="footer-col">
+                <h4>Platform</h4>
+                <ul>
+                    <li><a href="#features">Features</a></li>
+                    <li><a href="#demo">Scenarios</a></li>
+                    <li><a href="#architecture">Architecture</a></li>
+                    <li><a href="#roadmap">Roadmap</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Resources</h4>
+                <ul>
+                    <li><a href="https://github.com/rudra496/worldsim-ai/blob/main/docs/ARCHITECTURE.md" target="_blank">Architecture Guide</a></li>
+                    <li><a href="https://github.com/rudra496/worldsim-ai/blob/main/docs/SIMULATION_GUIDE.md" target="_blank">Simulation Guide</a></li>
+                    <li><a href="https://github.com/rudra496/worldsim-ai/blob/main/CONTRIBUTING.md" target="_blank">Contributing</a></li>
+                    <li><a href="https://github.com/rudra496/worldsim-ai/releases" target="_blank">Releases</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Connect</h4>
+                <ul>
+                    <li><a href="https://github.com/rudra496/worldsim-ai/issues" target="_blank">Report a Bug</a></li>
+                    <li><a href="https://github.com/rudra496/worldsim-ai/discussions" target="_blank">Discussions</a></li>
+                    <li><a href="https://github.com/rudra496" target="_blank">Author's GitHub</a></li>
+                    <li><a href="https://rudra496.github.io/site" target="_blank">Author's Website</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <span>© 2026 WorldSim AI · MIT License · Built by Rudra Sarker</span>
+            <span>Made with ❤️ in Bangladesh</span>
+        </div>
+    </div>
+</footer>
+
+<!-- Scroll animations -->
+<script>
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>
