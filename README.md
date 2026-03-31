@@ -1,5 +1,12 @@
 <div align="center">
 
+<!-- Stargazers — dynamic showcase -->
+<a href="https://github.com/rudra496/worldsim-ai/stargazers">
+  <img src="https://api.star-history.com/svg?repos=rudra496/worldsim-ai&type=Date" alt="Star History Chart" width="600">
+</a>
+
+<br><br>
+
 <img src="https://img.shields.io/badge/WorldSim-AI-1a1a2e?style=for-the-badge&labelColor=0f0f23" alt="WorldSim AI">
 
 # 🌍 WorldSim AI
@@ -9,6 +16,13 @@
 <p>
 <strong>Model, predict, and optimize real-world systems</strong> — smart cities, factories, energy grids, logistics networks, and more. Research-grade agent-based simulation with real-time 3D visualization, reinforcement learning, IoT data ingestion, distributed scaling, and a full digital twin framework. 100% free and open-source (MIT).
 </p>
+
+> If you find this project useful, please consider giving it a ⭐ star — it helps more developers discover it!
+
+[![GitHub stars](https://img.shields.io/github/stars/rudra496/worldsim-ai?style=social)](https://github.com/rudra496/worldsim-ai/stargazers)
+[![GitHub forks](https://img.shields.io/github/forks/rudra496/worldsim-ai?style=social)](https://github.com/rudra496/worldsim-ai/network/members)
+[![GitHub watchers](https://img.shields.io/github/watchers/rudra496/worldsim-ai?style=social)](https://github.com/rudra496/worldsim-ai/watchers)
+[![GitHub discussions](https://img.shields.io/github/discussions/rudra496/worldsim-ai)](https://github.com/rudra496/worldsim-ai/discussions)
 
 [![Python 3.11+](https://img.shields.io/badge/Python-3.11+-3776AB.svg?style=flat&logo=python&logoColor=white)](https://python.org)
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.104+-009688.svg?style=flat&logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com)
