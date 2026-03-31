@@ -28,6 +28,10 @@ jobs:
                       try: ast.parse(open(p).read()); ok+=1
                       except SyntaxError as e:
                           print(f'FAIL: {p} - {e}'); err+=1
+          for f in ['run_demo.py'] + [os.path.join('tests',f) for f in os.listdir('tests') if f.endswith('.py')]:
+              try: ast.parse(open(f).read()); ok+=1
+              except SyntaxError as e:
+                  print(f'FAIL: {f} - {e}'); err+=1
           print(f'{ok} files OK, {err} errors')
           exit(1 if err > 0 else 0)
           "
@@ -50,9 +54,9 @@ jobs:
     needs: test
     steps:
       - uses: actions/checkout@v4
-      - name: Build backend
+      - name: Build backend image
         run: docker build -t worldsim-backend .
-      - name: Build frontend
+      - name: Build frontend image
         run: docker build -t worldsim-frontend ./frontend
 
   frontend-lint:

@@ -1,0 +1,44 @@
+[build-system]
+requires = ["setuptools>=68.0", "wheel"]
+build-backend = "setuptools.backends._legacy:_Backend"
+
+[project]
+name = "worldsim-ai"
+version = "0.1.0"
+description = "AI-Powered Digital Twin Simulation Platform"
+readme = "README.md"
+license = {text = "MIT"}
+requires-python = ">=3.10"
+authors = [{name = "WorldSim AI Contributors"}]
+keywords = ["simulation", "digital-twin", "agent-based", "ai", "optimization"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Science/Research",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Topic :: Scientific/Engineering :: Simulation",
+]
+dependencies = [
+    "numpy>=1.24.0",
+    "scipy>=1.11.0",
+    "pyyaml>=6.0",
+]
+
+[project.optional-dependencies]
+api = ["fastapi>=0.104.0", "uvicorn>=0.24.0", "pydantic>=2.5.0", "websockets>=12.0"]
+ml = ["torch>=2.0.0", "torchvision>=0.15.0"]
+rl = ["gymnasium>=0.29.0", "stable-baselines3>=2.0.0"]
+distributed = ["grpcio>=1.60.0", "protobuf>=4.25.0"]
+iot = ["paho-mqtt>=2.0.0", "redis>=5.0.0"]
+all = ["worldsim-ai[api,ml,rl,distributed,iot]"]
+dev = ["pytest>=7.4.0", "pytest-cov>=4.1.0", "black>=23.0.0", "ruff>=0.1.0"]
+
+[project.scripts]
+worldsim = "worldsim.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["worldsim*"]

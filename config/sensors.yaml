@@ -1,0 +1,43 @@
+sources:
+  temperature_sensors:
+    type: mqtt
+    broker: localhost:1883
+    topics:
+      - sensors/temperature/#
+    format: json
+    qos: 1
+
+  humidity_sensors:
+    type: mqtt
+    broker: localhost:1883
+    topics:
+      - sensors/humidity/#
+    format: json
+
+  traffic_cameras:
+    type: file
+    path: data/traffic.csv
+    format: csv
+    poll_interval: 5
+    tail: true
+
+  weather_api:
+    type: api
+    url: https://api.example.com/weather
+    poll_interval: 300
+    headers:
+      Authorization: "Bearer ${WEATHER_API_KEY}"
+
+  simulator:
+    type: simulator
+    sensor_ids:
+      - sim_temperature
+      - sim_humidity
+      - sim_pressure
+    interval: 1.0
+    base_values:
+      sim_temperature: 22.0
+      sim_humidity: 55.0
+      sim_pressure: 1013.25
+    noise_std: 0.5
+    failure_rate: 0.01

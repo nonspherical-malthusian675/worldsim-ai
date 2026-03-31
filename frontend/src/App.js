@@ -1,8 +1,11 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import SimulationCanvas from './components/SimulationCanvas';
+import World3D from './components/World3D';
 import MetricsPanel from './components/MetricsPanel';
 import ControlPanel from './components/ControlPanel';
+import CameraControls from './components/CameraControls';
 import ScenarioSelector from './components/ScenarioSelector';
+import ViewSwitcher from './components/ViewSwitcher';
 import { generateDemoState, generateDemoMetrics } from './utils/simulation';
 import { startSimulation, getStatus } from './services/api';
 
@@ -19,38 +22,32 @@ const App = () => {
   const [demoMode, setDemoMode] = useState(true);
   const [backendConnected, setBackendConnected] = useState(false);
   const [backendStatus, setBackendStatus] = useState('checking...');
+  const [activeView, setActiveView] = useState('2d');
+  const [timeOfDay, setTimeOfDay] = useState('day');
   const intervalRef = useRef(null);
   const pollRef = useRef(null);
 
   const tickInterval = Math.max(50, 1000 / speed);
 
-  // Check backend health
   useEffect(() => {
     const check = async () => {
       try {
         const res = await fetch(process.env.REACT_APP_API_URL || 'http://localhost:8000');
-        if (res.ok) {
-          setBackendConnected(true);
-          setBackendStatus('connected');
-        }
-      } catch {
-        setBackendConnected(false);
-        setBackendStatus('offline — demo mode');
-      }
+        if (res.ok) { setBackendConnected(true); setBackendStatus('connected'); }
+      } catch { setBackendConnected(false); setBackendStatus('offline — demo mode'); }
     };
     check();
     const id = setInterval(check, 10000);
     return () => clearInterval(id);
   }, []);
 
-  // Demo mode loop
   useEffect(() => {
     if (isRunning && demoMode) {
       intervalRef.current = setInterval(() => {
         setTick((t) => {
-          const newTick = t + 1;
-          setSimState(generateDemoState(newTick));
-          return newTick;
+          const nt = t + 1;
+          setSimState(generateDemoState(nt));
+          return nt;
         });
       }, tickInterval);
       return () => clearInterval(intervalRef.current);
@@ -58,24 +55,15 @@ const App = () => {
     return () => clearInterval(intervalRef.current);
   }, [isRunning, speed, demoMode, tickInterval]);
 
-  // Backend poll loop
   useEffect(() => {
     if (isRunning && !demoMode && simId) {
       pollRef.current = setInterval(async () => {
         try {
           const status = await getStatus(simId);
-          if (status.status === 'completed') {
-            setIsRunning(false);
-            setBackendStatus('simulation complete');
-          }
+          if (status.status === 'completed') { setIsRunning(false); setBackendStatus('complete'); }
           setTick(status.ticks_completed || tick);
-          setSimState({
-            agentCount: status.summary?.ticks || 0,
-            metrics: status.summary,
-          });
-        } catch (e) {
-          console.error('Poll failed:', e);
-        }
+          setSimState({ agentCount: status.summary?.ticks || 0, metrics: status.summary });
+        } catch (e) { console.error('Poll failed:', e); }
       }, POLL_INTERVAL);
       return () => clearInterval(pollRef.current);
     }
@@ -83,31 +71,20 @@ const App = () => {
   }, [isRunning, demoMode, simId, tick]);
 
   const handleSelectScenario = useCallback(async (scenarioId) => {
-    setScenario(scenarioId);
-    setTick(0);
-    setIsRunning(false);
-    clearInterval(intervalRef.current);
-    clearInterval(pollRef.current);
-
+    setScenario(scenarioId); setTick(0); setIsRunning(false);
+    clearInterval(intervalRef.current); clearInterval(pollRef.current);
     if (backendConnected) {
       try {
         const result = await startSimulation(scenarioId);
-        setSimId(result.sim_id);
-        setDemoMode(false);
+        setSimId(result.sim_id); setDemoMode(false);
         setSimState({ agentCount: 0, metrics: {} });
-        setIsRunning(true);
-        setBackendStatus('simulation running...');
-        return;
-      } catch (e) {
-        console.warn('Backend start failed, falling back to demo:', e);
-      }
+        setIsRunning(true); setBackendStatus('running...'); return;
+      } catch (e) { console.warn('Backend failed, demo mode:', e); }
     }
-
-    setDemoMode(true);
-    setSimState(generateDemoState(0));
+    setDemoMode(true); setSimState(generateDemoState(0));
   }, [backendConnected]);
 
-  const metrics = simState?.metrics || (demoMode ? {
+  const metrics = simState?.metrics || (demoMode && isRunning ? {
     throughput: 0.6 + Math.sin(tick * 0.1) * 0.2 + Math.random() * 0.1,
     efficiency: 0.7 + Math.cos(tick * 0.05) * 0.15,
     stability: 0.8 + Math.sin(tick * 0.03) * 0.1,
@@ -118,25 +95,8 @@ const App = () => {
   const timeSeries = generateDemoMetrics(tick);
 
   const handlePlay = () => {
-    if (!simState && !scenario) {
-      setSimState(generateDemoState(0));
-      setDemoMode(true);
-    }
+    if (!simState && !scenario) { setSimState(generateDemoState(0)); setDemoMode(true); }
     setIsRunning(true);
-  };
-
-  const handleStep = () => {
-    const t = tick + 1;
-    setTick(t);
-    setSimState(generateDemoState(t));
-  };
-
-  const handleReset = () => {
-    setIsRunning(false);
-    setTick(0);
-    setSimId(null);
-    setSimState(generateDemoState(0));
-    setDemoMode(true);
   };
 
   return (
@@ -147,6 +107,7 @@ const App = () => {
           <span className="tagline">Digital Twin Simulation Platform</span>
         </div>
         <div className="header-right">
+          <ViewSwitcher activeView={activeView} onViewChange={setActiveView} />
           <span className={`status-badge ${backendConnected ? 'connected' : 'offline'}`}>
             {backendStatus}
           </span>
@@ -159,28 +120,39 @@ const App = () => {
           <aside className="sidebar">
             <div className="sidebar-header">
               <h3>📂 Scenarios</h3>
-              <button className="icon-btn" onClick={() => setSidebarCollapsed(true)} title="Collapse">◀</button>
+              <button className="icon-btn" onClick={() => setSidebarCollapsed(true)}>◀</button>
             </div>
             <ScenarioSelector selected={scenario} onSelect={handleSelectScenario} />
           </aside>
         )}
         {sidebarCollapsed && (
-          <button className="expand-btn" onClick={() => setSidebarCollapsed(false)} title="Expand sidebar">📂</button>
+          <button className="expand-btn" onClick={() => setSidebarCollapsed(false)}>📂</button>
         )}
 
         <main className="main-content">
           <ControlPanel
-            isRunning={isRunning}
-            speed={speed}
-            onPlay={handlePlay}
-            onPause={() => setIsRunning(false)}
-            onStep={handleStep}
-            onReset={handleReset}
+            isRunning={isRunning} speed={speed}
+            onPlay={handlePlay} onPause={() => setIsRunning(false)}
+            onStep={() => { const t = tick + 1; setTick(t); setSimState(generateDemoState(t)); }}
+            onReset={() => { setIsRunning(false); setTick(0); setSimId(null); setSimState(generateDemoState(0)); setDemoMode(true); }}
             onSpeedChange={setSpeed}
             info={scenario ? `${scenario} • ${demoMode ? 'Demo' : 'Backend'} • Tick ${tick}` : 'Select a scenario to begin'}
           />
+
+          {activeView === '3d' && (
+            <CameraControls
+              timeOfDay={timeOfDay}
+              onPreset={() => {}}
+              onTimeOfDayChange={setTimeOfDay}
+            />
+          )}
+
           <div className="content-grid">
-            <SimulationCanvas state={simState} />
+            {activeView === '2d' ? (
+              <SimulationCanvas state={simState} />
+            ) : (
+              <World3D state={simState} timeOfDay={timeOfDay} />
+            )}
             <MetricsPanel metrics={metrics} timeSeries={timeSeries} />
           </div>
         </main>
