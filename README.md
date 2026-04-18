@@ -14,7 +14,7 @@
 **AI-Powered Digital Twin Simulation Platform**
 
 <p>
-<strong>Model, predict, and optimize real-world systems</strong> — smart cities, factories, energy grids, logistics networks, and more. Feature-rich agent-based simulation with real-time 3D visualization, reinforcement learning, IoT data ingestion, distributed scaling, and digital twin capabilities. 100% free and open-source (MIT).
+<strong>Model, predict, and optimize real-world systems</strong> — smart cities, factories, energy grids, logistics networks, and more. Feature-rich agent-based simulation with real-time 3D visualization, reinforcement learning, IoT data ingestion, distributed scaling, and digital twin capabilities. Free and open-source (MIT).
 </p>
 
 > If you find this project useful, please consider giving it a ⭐ star — it helps more developers discover it!
